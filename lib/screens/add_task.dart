@@ -397,74 +397,114 @@ class _AddListScreenState extends State<AddListScreen>
                   return Card(
                     child: Column(
                       children: _userModel![index].data.map((datum) {
-                        return ListTile(
-                          leading: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: Icon(Icons.delete, color: Colors.red),
-                                onPressed: () {
-                                  // Call the deleteTask function with the task id
-                                  deleteTask(datum.id);
-                                  setState(() {
-                                    // Update the UI after deletion
-                                    _userModel!.removeAt(index);
-                                  });
-                                },
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              left: BorderSide(
+                                color: borderColors[index % borderColors.length], // Apply color based on index
+                                width: 5, // Adjust the width as needed
                               ),
-                              IconButton(
-                                icon: Icon(Icons.edit, color: Colors.blue),
-                                onPressed: () async {
-                                  String? newName = await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      TextEditingController controller =
-                                      TextEditingController(text: datum.name);
-                                      return AlertDialog(
-                                        title: Text('Edit Task'),
-                                        content: TextField(
-                                          controller: controller,
-                                          decoration: InputDecoration(
-                                            labelText: 'New Task Name',
-                                          ),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text('Cancel'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop(controller.text);
-                                            },
-                                            child: Text('Save'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                  if (newName != null) {
-                                    setState(() {
-                                      datum.name = newName;
-                                    });
-                                    // Call the updateTask function with the task id and new name
-                                    await updateTask(datum.id, newName);
-                                  }
-                                },
-                              ),
-                            ],
+                            ),
                           ),
-                          title: Text("Task ID: ${datum.id}"),
-                          subtitle: Text("Task Name: ${datum.name}"),
-                          // Add more properties as needed
+                          child: ListTile(
+                            leading: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  onPressed: () async {
+                                    // Show confirmation dialog
+                                    bool confirmDelete = await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('Confirm Deletion'),
+                                          content: Text('Are you sure you want to delete this task?'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(false); // Cancel
+                                              },
+                                              child: Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(true); // Confirm
+                                              },
+                                              child: Text('Delete'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+
+                                    // Delete the task if confirmed
+                                    if (confirmDelete == true) {
+                                      deleteTask(datum.id);
+                                      setState(() {
+                                        _userModel!.removeAt(index);
+                                      });
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text('Task deleted successfully')),
+                                      );
+                                    }
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.edit, color: Colors.blue),
+                                  onPressed: () async {
+                                    String? newName = await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        TextEditingController controller = TextEditingController(text: datum.name);
+                                        return AlertDialog(
+                                          title: Text('Edit Task'),
+                                          content: TextField(
+                                            controller: controller,
+                                            decoration: InputDecoration(
+                                              labelText: 'New Task Name',
+                                            ),
+                                          ),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(); // Cancel
+                                              },
+                                              child: Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop(controller.text); // Save
+                                              },
+                                              child: Text('Save'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    if (newName != null) {
+                                      setState(() {
+                                        datum.name = newName;
+                                      });
+                                      await updateTask(datum.id, newName);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text('Task updated successfully')),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                            title: Text("Task ID: ${datum.id}"),
+                            subtitle: Text("Task Name: ${datum.name}"),
+                            // Add more properties as needed
+                          ),
                         );
                       }).toList(),
                     ),
                   );
                 },
-              ),
+              )
             )
           ],
         ),
