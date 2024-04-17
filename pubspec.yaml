@@ -94,7 +94,12 @@ flutter:
 
   #   - images/a_dot_ham.jpeg
   assets:
-    - assets/images/
+    - assets/images/purplelogin.jpeg
+    - assets/images/pinkimage.jpeg
+    - assets/images/splashscreenblack.jfif
+    - assets/images/splashscreenimage1.jpeg
+    - assets/images/splashscreenimage2.jpeg
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -121,3 +126,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+assets/images/splashscreenblack:
+  jfif:

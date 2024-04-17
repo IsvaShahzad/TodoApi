@@ -158,6 +158,45 @@ class _AddListScreenState extends State<AddListScreen>
     }
   }
 
+
+  Future<void> updateTask(String taskId, String newName) async {
+    var url = Uri.parse('https://todolist-d01w.onrender.com/todos/update');
+    var response = await http.put(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'id': taskId,
+        'name': newName,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Task updated successfully');
+    } else {
+      print('Failed to update task: ${response.reasonPhrase}');
+    }
+  }
+  Future<void> deleteTask(String taskId) async {
+    var request = http.Request(
+      'DELETE',
+      Uri.parse('https://todolist-d01w.onrender.com/todos/delete'),
+    );
+    request.headers.addAll(<String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+    request.body = jsonEncode({'id': taskId}); // Pass taskId dynamically
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
   bool onScrollNotification(ScrollNotification notification) {
     if (notification is UserScrollNotification &&
         notification.metrics.axis == Axis.vertical) {
@@ -351,46 +390,82 @@ class _AddListScreenState extends State<AddListScreen>
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : ListView.builder(
-                      itemCount: _userModel!.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          child: Column(
-                            children: _userModel![index].data.map((datum) {
-                              // Print the contents of the ListTile to the terminal
-                              print("Task ID: ${datum.id}");
-                              print("Task Name: ${datum.name}");
-
-                              return ListTile(
-                                title: Text("Task ID: ${datum.id}"),
-                                subtitle: Text("Task Name: ${datum.name}"),
-
-                                // Add more properties as needed
-                              );
-                            }).toList(),
+                  :
+              ListView.builder(
+                itemCount: _userModel!.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Column(
+                      children: _userModel![index].data.map((datum) {
+                        return ListTile(
+                          leading: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.delete, color: Colors.red),
+                                onPressed: () {
+                                  // Call the deleteTask function with the task id
+                                  deleteTask(datum.id);
+                                  setState(() {
+                                    // Update the UI after deletion
+                                    _userModel!.removeAt(index);
+                                  });
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.edit, color: Colors.blue),
+                                onPressed: () async {
+                                  String? newName = await showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      TextEditingController controller =
+                                      TextEditingController(text: datum.name);
+                                      return AlertDialog(
+                                        title: Text('Edit Task'),
+                                        content: TextField(
+                                          controller: controller,
+                                          decoration: InputDecoration(
+                                            labelText: 'New Task Name',
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop(controller.text);
+                                            },
+                                            child: Text('Save'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  if (newName != null) {
+                                    setState(() {
+                                      datum.name = newName;
+                                    });
+                                    // Call the updateTask function with the task id and new name
+                                    await updateTask(datum.id, newName);
+                                  }
+                                },
+                              ),
+                            ],
                           ),
+                          title: Text("Task ID: ${datum.id}"),
+                          subtitle: Text("Task Name: ${datum.name}"),
+                          // Add more properties as needed
                         );
-                      },
-                    ), // ListView.builder(
-              //     itemCount: _userModel!.length,
-              //     itemBuilder: (context, index) {
-              //       var userModel = _userModel![
-              //           index]; // Get the UserModel at the current index
-              //       var datum = userModel.data[
-              //           index]; // Get the Datum object at the current index
-              //
-              //       return Card(
-              //         child: ListTile(
-              //           title: Text(
-              //               datum.name), // Display the name in the ListTile
-              //           subtitle: Text(
-              //               datum.id), // Display the id in the ListTile
-              //           // Add other ListTile properties as needed
-              //         ),
-              //       );
-              //     },
-              //   ),
-            ),
+                      }).toList(),
+                    ),
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),
@@ -565,28 +640,27 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   bool onClicked = false;
 
-  Future<void> deleteTask(String taskId) async {
-    var request = http.Request('DELETE', Uri.parse('http://3.87.63.210:4000/todos/delete'));
-    request.headers.addAll(<String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    request.body = jsonEncode({'id': taskId}); // Pass taskId dynamically
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-    } else {
-      print(response.reasonPhrase);
-    }
-  }
-
-
+  // Future<void> deleteTask(String taskId) async {
+  //   var request = http.Request(
+  //       'DELETE', Uri.parse('http://3.87.63.210:4000/todos/delete'));
+  //   request.headers.addAll(<String, String>{
+  //     'Content-Type': 'application/json; charset=UTF-8',
+  //   });
+  //   request.body = jsonEncode({'id': taskId}); // Pass taskId dynamically
+  //
+  //   http.StreamedResponse response = await request.send();
+  //
+  //   if (response.statusCode == 200) {
+  //     print(await response.stream.bytesToString());
+  //   } else {
+  //     print(response.reasonPhrase);
+  //   }
+  // }
 
   Future<void> postData(String name, String description, bool completed) async {
     try {
       var url = Uri.parse(
-          'http://3.87.63.210:4000/todos/add'); // Assuming tasksEndpoint is where you want to send the data
+          'https://todolist-d01w.onrender.com/todos/add'); // Assuming tasksEndpoint is where you want to send the data
       var response = await http.post(
         url,
         headers: <String, String>{
@@ -729,7 +803,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                       // Close the screen and return the task
                                       Navigator.pop(
                                           context, _taskController.text);
-                                      deleteTask('65d35abb87e4fd730ed745b7');
+                                      // deleteTask('65d35abb87e4fd730ed745b7');
                                       postData(
                                         _taskController
                                             .text, // Pass the task name
