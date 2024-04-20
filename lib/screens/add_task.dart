@@ -786,7 +786,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   //         fontFamily: 'Montserrat'),)),
 
                   Container(
-                    height: 260,
+                    height: 238,
                     width: double.infinity,
                     child: Stack(
                       children: [
@@ -881,9 +881,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               },
                             ),
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
+                         
                           // Container(
                           //   child: TextFormField(
                           //     style: TextStyle(
@@ -916,7 +914,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           // ),
 
 
-                          SizedBox(height: 45.0),
+                          SizedBox(height: 20.0),
 
                           ElevatedButton(
                             onPressed: () async {
