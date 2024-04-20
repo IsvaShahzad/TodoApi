@@ -1,6 +1,8 @@
 import 'package:ezi_taskmanager/screens/add_task.dart';
 import 'package:flutter/material.dart';
 
+import 'forgotpassword_screen.dart';
+
 class LoginScreen extends StatefulWidget {
   final List<String> tasks;
   LoginScreen({required this.tasks});
@@ -78,10 +80,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 13,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w600,
+                                  fontFamily: 'Montserrat'
                                 ),
                                 decoration: InputDecoration(
                                   hintText: 'Enter Email',
-                                  hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
+                                  hintStyle: TextStyle(fontSize: 13, color: Colors.grey,fontFamily: 'Montserrat'),
                                   filled: true,
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
@@ -112,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 obscureText: _isObscure,
                                 decoration: InputDecoration(
                                   hintText: ' Enter Password',
-                                  hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
+                                  hintStyle: TextStyle(fontSize: 13, color: Colors.grey,fontFamily: 'Montserrat'),
                                   filled: true,
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
@@ -136,7 +139,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: TextStyle(
                                     fontSize: 13,
                                     color: Color(0xFF000000),
-                                    fontWeight: FontWeight.w600
+                                    fontWeight: FontWeight.w600,
+                                  fontFamily: 'Montserrat'
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -151,13 +155,13 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: TextButton(
                                 child: Text(
                                   'Forgot Password?',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'Montserrat'),
                                 ),
                                 style: TextButton.styleFrom(
                                   primary: Color(0xFFdf4652),
                                 ),
                                 onPressed: () {
-                                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
                                 },
                               ),
                             ),
@@ -192,6 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
                                         color: Colors.white,
+                                        fontFamily: 'Montserrat'
                                       ),
                                     ),
                                   ),
@@ -208,6 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 'or',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
+                                  fontFamily: 'Montserrat',
                                   fontSize: 15,
                                   color: Color(0xFFdf4652),
                                 ),
@@ -216,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Don't have an account?"),
+                                Text("Don't have an account?", style: TextStyle(fontFamily: 'Montserrat'),),
                                 TextButton(
                                   onPressed: () {
                                     // Navigator.pushReplacement(
@@ -229,6 +235,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     style: TextStyle(
                                       color: Color(0xFFdf4652), // Sign up button color
                                       fontWeight: FontWeight.bold,
+                                      fontFamily: 'Montserrat'
                                     ),
                                   ),
                                 ),

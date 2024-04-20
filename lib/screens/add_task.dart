@@ -243,11 +243,11 @@ class _AddListScreenState extends State<AddListScreen>
   }
 
   List<Color> borderColors = [
-    Colors.green,
-    Colors.pinkAccent,
+    Colors.blueGrey,
+    Colors.amber,
     Colors.purple,
     Colors.cyan,
-    Colors.lightGreenAccent,
+    Colors.teal,
 
     // Add more colors as needed
   ];
@@ -255,7 +255,8 @@ class _AddListScreenState extends State<AddListScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFf2e8ff),
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF99a9dd),
 
@@ -284,6 +285,7 @@ class _AddListScreenState extends State<AddListScreen>
         elevation: 3, // Set the elevation to 0 to remove the shadow
 // Set the shape to CircleBorder() for a circular button
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar.builder(
         itemCount: iconList.length,
@@ -365,154 +367,157 @@ class _AddListScreenState extends State<AddListScreen>
         ),
       ),
 
-      body: NotificationListener<ScrollNotification>(
-        onNotification: onScrollNotification,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
+      body:
             Stack(
               children: [
+                // Image container positioned at the top
                 Container(
-                  height: 240, // Set the height of the image container
+                  height: 290.0, // Adjust the height as needed
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/blue1.jfif', // Replace with your image path
-                      ),
+                      image: AssetImage('assets/images/gig.jpeg'), // Replace with your image path
                       fit: BoxFit.cover, // Adjust the fit as needed
                     ),
                   ),
                 ),
-              ],
-            ),
 
-            Expanded(
-              child: _userModel == null || _userModel!.isEmpty
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  :
-              ListView.builder(
-                itemCount: _userModel!.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Column(
-                      children: _userModel![index].data.map((datum) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              left: BorderSide(
-                                color: borderColors[index % borderColors.length], // Apply color based on index
-                                width: 5, // Adjust the width as needed
+
+
+            Padding(
+              padding: EdgeInsets.only(top: 250),
+              child: Expanded(
+                child: _userModel == null || _userModel!.isEmpty
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    :
+                ListView.builder(
+                  itemCount: _userModel!.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: Column(
+                        children: _userModel![index].data.map((datum) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(
+                                  color: borderColors[index % borderColors.length], // Apply color based on index
+                                  width: 5, // Adjust the width as needed
+                                ),
                               ),
                             ),
-                          ),
-                          child: ListTile(
-                            leading: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
-                                  onPressed: () async {
-                                    // Show confirmation dialog
-                                    bool confirmDelete = await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text('Confirm Deletion'),
-                                          content: Text('Are you sure you want to delete this task?'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop(false); // Cancel
-                                              },
-                                              child: Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop(true); // Confirm
-                                              },
-                                              child: Text('Delete'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                            child: ListTile(
 
-                                    // Delete the task if confirmed
-                                    if (confirmDelete == true) {
-                                      deleteTask(datum.id);
-                                      setState(() {
-                                        _userModel!.removeAt(index);
-                                      });
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Task deleted successfully')),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              tileColor: Colors.white,
+                              leading: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.delete, color: Colors.red),
+                                    onPressed: () async {
+                                      // Show confirmation dialog
+                                      bool confirmDelete = await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text('Confirm Deletion',style: TextStyle(fontFamily: 'Montserrat'),),
+                                            content: Text('Are you sure you want to delete this task?',style: TextStyle(fontFamily: 'Montserrat'),),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(false); // Cancel
+                                                },
+                                                child: Text('Cancel',style: TextStyle(fontFamily: 'Montserrat'),),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(true); // Confirm
+                                                },
+                                                child: Text('Delete',style: TextStyle(fontFamily: 'Montserrat'),),
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       );
-                                    }
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.edit, color: Colors.purple),
-                                  onPressed: () async {
-                                    String? newName = await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        TextEditingController controller = TextEditingController(text: datum.name);
-                                        return AlertDialog(
-                                          title: Text('Edit Task'),
-                                          content: TextField(
-                                            controller: controller,
-                                            decoration: InputDecoration(
-                                              labelText: 'New Task Name',
-                                            ),
-                                          ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop(); // Cancel
-                                              },
-                                              child: Text('Cancel'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop(controller.text); // Save
-                                              },
-                                              child: Text('Save'),
-                                            ),
-                                          ],
+
+                                      // Delete the task if confirmed
+                                      if (confirmDelete == true) {
+                                        deleteTask(datum.id);
+                                        setState(() {
+                                          _userModel!.removeAt(index);
+                                        });
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Task deleted successfully',style: TextStyle(fontFamily: 'Montserrat'),)),
                                         );
-                                      },
-                                    );
-                                    if (newName != null) {
-                                      setState(() {
-                                        datum.name = newName;
-                                      });
-                                      await updateTask(datum.id, newName);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('Task updated successfully')),
+                                      }
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.edit, color: Colors.purple),
+                                    onPressed: () async {
+                                      String? newName = await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          TextEditingController controller = TextEditingController(text: datum.name);
+                                          return AlertDialog(
+                                            title: Text('Edit Task',style: TextStyle(fontFamily: 'Montserrat'),),
+                                            content: TextField(
+                                              controller: controller,
+                                              decoration: InputDecoration(
+                                                labelText: 'Task Name',
+                                              ),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(); // Cancel
+                                                },
+                                                child: Text('Cancel',style: TextStyle(fontFamily: 'Montserrat'),),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop(controller.text); // Save
+                                                },
+                                                child: Text('Save',style: TextStyle(fontFamily: 'Montserrat'),),
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       );
-                                    }
-                                  },
-                                ),
-                              ],
+                                      if (newName != null) {
+                                        setState(() {
+                                          datum.name = newName;
+                                        });
+                                        await updateTask(datum.id, newName);
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Task updated successfully')),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                              // title: Text("Task ID: ${datum.id}"),
+                              // subtitle: Text("Task Name: ${datum.name}"),
+
+                              title: Text("${datum.name}", style: TextStyle(fontFamily: 'Montserrat',fontSize: 14),),
+                              // subtitle: Text("Task Name: ${datum.name}"),
+                              // Add more properties as needed
                             ),
-                            // title: Text("Task ID: ${datum.id}"),
-                            // subtitle: Text("Task Name: ${datum.name}"),
-
-                            title: Text("Task : ${datum.name}"),
-                            // subtitle: Text("Task Name: ${datum.name}"),
-                            // Add more properties as needed
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  );
-                },
-              )
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  },
+                )
+              ),
             )
           ],
         ),
-      ),
+
 
       // body: NotificationListener<ScrollNotification>(
       //   onNotification: onScrollNotification,
@@ -769,11 +774,35 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFf2e8ff),
         body: Padding(
             padding: EdgeInsets.only(top: 80),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Padding(padding: EdgeInsets.symmetric(horizontal: 30),
+                  //     child: Text('Add Task,', style: TextStyle(fontSize: 27,
+                  //         fontWeight: FontWeight.bold,
+                  //         fontFamily: 'Montserrat'),)),
+
+                  Container(
+                    height: 260,
+                    width: double.infinity,
+                    child: Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/imageadd.png"),
+                              // fit: BoxFit.cover,
+
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  ),
               // Padding(
               //   padding: EdgeInsets.only(top: 50),
               //   child: Container(
@@ -808,8 +837,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               //     // ),
               //   ),
               // ),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 30),
-                      child: Text('Add Task,', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),)),
+
 
               Padding(
                 padding: EdgeInsets.all(16.0),
@@ -817,7 +845,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Padding(
-                    padding: EdgeInsets.only(top: 80),
+                    padding: EdgeInsets.only(top: 20),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -832,7 +860,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                               ),
                               decoration: InputDecoration(
                                 hintText: 'Enter Task',
-                                hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
+                                hintStyle: TextStyle(fontSize: 13, color: Colors.grey, fontFamily: 'Montserrat'),
                                 filled: true,
                                 fillColor: Colors.grey[100],
                                 border: OutlineInputBorder(
@@ -856,39 +884,39 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           SizedBox(
                             height: 15,
                           ),
-                          Container(
-                            child: TextFormField(
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: 'Enter Date',
-                                hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
-                                filled: true,
-                                fillColor: Colors.grey[100],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.zero,
-                                  borderSide: BorderSide.none,
-                                ),
-                              ),
-                              textInputAction: TextInputAction.next,
-                              validator: (value) {
-                                RegExp regex = RegExp(
-                                    r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
-                                if (value == null || value.isEmpty) {
-                                  return 'Please Enter your Email ';
-                                } else if (!regex.hasMatch(value)) {
-                                  return 'Enter according to format';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
+                          // Container(
+                          //   child: TextFormField(
+                          //     style: TextStyle(
+                          //       fontSize: 13,
+                          //       color: Colors.black,
+                          //       fontWeight: FontWeight.w600,
+                          //     ),
+                          //     decoration: InputDecoration(
+                          //       hintText: 'Enter Date',
+                          //       hintStyle: TextStyle(fontSize: 13, color: Colors.grey, fontFamily: 'Montserrat'),
+                          //       filled: true,
+                          //       fillColor: Colors.grey[100],
+                          //       border: OutlineInputBorder(
+                          //         borderRadius: BorderRadius.zero,
+                          //         borderSide: BorderSide.none,
+                          //       ),
+                          //     ),
+                          //     textInputAction: TextInputAction.next,
+                          //     validator: (value) {
+                          //       RegExp regex = RegExp(
+                          //           r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
+                          //       if (value == null || value.isEmpty) {
+                          //         return 'Please Enter your Email ';
+                          //       } else if (!regex.hasMatch(value)) {
+                          //         return 'Enter according to format';
+                          //       }
+                          //       return null;
+                          //     },
+                          //   ),
+                          // ),
 
 
-                          SizedBox(height: 70.0),
+                          SizedBox(height: 45.0),
 
                           ElevatedButton(
                             onPressed: () async {
@@ -919,7 +947,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                                 onClicked = false;
                               });
                             },
-                            child: Text('Add Task'),
+                            child: Text('Add Task',style: TextStyle(fontFamily: 'Montserrat'),),
                             style: ElevatedButton.styleFrom(
                               primary: Color(0xFF99a9dd), // Button color
                               onPrimary: Colors.white, // Text color

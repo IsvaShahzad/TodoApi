@@ -64,6 +64,7 @@ dependencies:
 
 
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -100,6 +101,9 @@ flutter:
     - assets/images/splashscreenimage1.jpeg
     - assets/images/image1_processed.PNG
     - assets/images/mainimage.png
+    - assets/images/purply.jfif
+    - assets/images/gig.jpeg
+    - assets/images/imageadd.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -113,10 +117,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+     - family: Montserrat
+       fonts:
+         - asset: fonts/Montserrat-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
@@ -127,6 +131,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-assets/images/image1_processed:
+assets/images/purply:
+  jfif:assets/images/purple:
+  png':assets/images/image1_processed:
   PNG:assets/images/splashscreenblack:
   jfif:
