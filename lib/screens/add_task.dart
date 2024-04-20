@@ -18,7 +18,7 @@ class AddListScreen extends StatefulWidget {
   @override
   final List<String> tasks;
 
-  AddListScreen({required this.tasks});
+  AddListScreen({required this.tasks,});
 
   _AddListScreenState createState() => _AddListScreenState();
 }
@@ -245,8 +245,8 @@ class _AddListScreenState extends State<AddListScreen>
   List<Color> borderColors = [
     Colors.green,
     Colors.pinkAccent,
-    Colors.yellow,
     Colors.purple,
+    Colors.cyan,
     Colors.lightGreenAccent,
 
     // Add more colors as needed
@@ -257,7 +257,7 @@ class _AddListScreenState extends State<AddListScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.pink[400],
+        backgroundColor: Color(0xFF99a9dd),
 
         child: Icon(
           Icons.add,
@@ -385,6 +385,7 @@ class _AddListScreenState extends State<AddListScreen>
                 ),
               ],
             ),
+
             Expanded(
               child: _userModel == null || _userModel!.isEmpty
                   ? const Center(
@@ -451,7 +452,7 @@ class _AddListScreenState extends State<AddListScreen>
                                   },
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.edit, color: Colors.blue),
+                                  icon: Icon(Icons.edit, color: Colors.purple),
                                   onPressed: () async {
                                     String? newName = await showDialog(
                                       context: context,
@@ -495,8 +496,11 @@ class _AddListScreenState extends State<AddListScreen>
                                 ),
                               ],
                             ),
-                            title: Text("Task ID: ${datum.id}"),
-                            subtitle: Text("Task Name: ${datum.name}"),
+                            // title: Text("Task ID: ${datum.id}"),
+                            // subtitle: Text("Task Name: ${datum.name}"),
+
+                            title: Text("Task : ${datum.name}"),
+                            // subtitle: Text("Task Name: ${datum.name}"),
                             // Add more properties as needed
                           ),
                         );
@@ -766,120 +770,170 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-            padding: EdgeInsets.only(top: 150),
-            child: Container(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  // Padding(
-                  //   padding: EdgeInsets.only(top: 50),
-                  //   child: Container(
-                  //     height: 110,
-                  //     padding: EdgeInsets.symmetric(horizontal: 10),
-                  //     decoration: BoxDecoration(
-                  //
-                  //       gradient: LinearGradient(
-                  //         begin: Alignment.topCenter,
-                  //         end: Alignment.bottomCenter,
-                  //         colors: [Color(0xffADD8E6), Color(0xffFFB6C1)],
-                  //       ),
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.withOpacity(0.3),
-                  //           blurRadius: 5,
-                  //           offset: Offset(0, 3),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     // child: HorizontalCalendar(
-                  //     //   date: DateTime.now(),
-                  //     //   initialDate: DateTime.now(),
-                  //     //   textColor: Colors.white,
-                  //     //   backgroundColor: Colors.transparent,
-                  //     //   selectedColor: Colors.transparent,
-                  //     //   showMonth: false,
-                  //     //   locale: Localizations.localeOf(context),
-                  //     //   onDateSelected: (date) {
-                  //     //     // Handle date selection
-                  //     //   },
-                  //     // ),
-                  //   ),
-                  // ),
+            padding: EdgeInsets.only(top: 80),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+              // Padding(
+              //   padding: EdgeInsets.only(top: 50),
+              //   child: Container(
+              //     height: 110,
+              //     padding: EdgeInsets.symmetric(horizontal: 10),
+              //     decoration: BoxDecoration(
+              //
+              //       gradient: LinearGradient(
+              //         begin: Alignment.topCenter,
+              //         end: Alignment.bottomCenter,
+              //         colors: [Color(0xffADD8E6), Color(0xffFFB6C1)],
+              //       ),
+              //       boxShadow: [
+              //         BoxShadow(
+              //           color: Colors.grey.withOpacity(0.3),
+              //           blurRadius: 5,
+              //           offset: Offset(0, 3),
+              //         ),
+              //       ],
+              //     ),
+              //     // child: HorizontalCalendar(
+              //     //   date: DateTime.now(),
+              //     //   initialDate: DateTime.now(),
+              //     //   textColor: Colors.white,
+              //     //   backgroundColor: Colors.transparent,
+              //     //   selectedColor: Colors.transparent,
+              //     //   showMonth: false,
+              //     //   locale: Localizations.localeOf(context),
+              //     //   onDateSelected: (date) {
+              //     //     // Handle date selection
+              //     //   },
+              //     // ),
+              //   ),
+              // ),
+                  Padding(padding: EdgeInsets.symmetric(horizontal: 30),
+                      child: Text('Add Task,', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),)),
 
-                  Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Container(
-                      height: 310,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            blurRadius: 1,
-                            spreadRadius: 1,
-                            offset: Offset(0, 3),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 80),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Container(
+                            child: TextFormField(
+                              controller: _taskController,
+
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'Enter Task',
+                                hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey[100],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.zero,
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                              textInputAction: TextInputAction.next,
+                              validator: (value) {
+                                RegExp regex = RegExp(
+                                    r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter your Email ';
+                                } else if (!regex.hasMatch(value)) {
+                                  return 'Enter according to format';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 80),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                TextField(
-                                  controller: _taskController,
-                                  decoration: InputDecoration(
-                                    hintText: 'Enter task',
-                                  ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            child: TextFormField(
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'Enter Date',
+                                hintStyle: TextStyle(fontSize: 13, color: Colors.grey),
+                                filled: true,
+                                fillColor: Colors.grey[100],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.zero,
+                                  borderSide: BorderSide.none,
                                 ),
-                                SizedBox(height: 70.0),
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    if (_taskController.text.isNotEmpty) {
-                                      _displaySuccessMotionToast();
-                                      // Close the screen and return the task
-                                      Navigator.pop(
-                                          context, _taskController.text);
-                                      // deleteTask('65d35abb87e4fd730ed745b7');
-                                      postData(
-                                        _taskController
-                                            .text, // Pass the task name
-                                        "", // Provide the description (modify as needed)
-                                        false, // Set the completed status (modify as needed)
-                                      );
-                                      // deleteTask("65d3517087e4fd730ed7459c");
-                                    } else {
-                                      // Display error message
-                                      _displayErrorMotionToast();
-                                    }
+                              ),
+                              textInputAction: TextInputAction.next,
+                              validator: (value) {
+                                RegExp regex = RegExp(
+                                    r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$');
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Enter your Email ';
+                                } else if (!regex.hasMatch(value)) {
+                                  return 'Enter according to format';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
 
-                                    setState(() {
-                                      onClicked = true;
-                                    });
-                                    await Future.delayed(
-                                        const Duration(milliseconds: 300));
-                                    setState(() {
-                                      onClicked = false;
-                                    });
-                                  },
-                                  child: Text('Add Task'),
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize: Size(50, 50),
-                                    maximumSize: Size(50, 50),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          0), // Adjust the radius as needed
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                        ),
-                      ),
-                    ),
+
+                          SizedBox(height: 70.0),
+
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (_taskController.text.isNotEmpty) {
+                                _displaySuccessMotionToast();
+                                // Close the screen and return the task
+                                Navigator.pop(
+                                    context, _taskController.text);
+                                // deleteTask('65d35abb87e4fd730ed745b7');
+                                postData(
+                                  _taskController
+                                      .text, // Pass the task name
+                                  "", // Provide the description (modify as needed)
+                                  false, // Set the completed status (modify as needed)
+                                );
+                                // deleteTask("65d3517087e4fd730ed7459c");
+                              } else {
+                                // Display error message
+                                _displayErrorMotionToast();
+                              }
+
+                              setState(() {
+                                onClicked = true;
+                              });
+                              await Future.delayed(
+                                  const Duration(milliseconds: 300));
+                              setState(() {
+                                onClicked = false;
+                              });
+                            },
+                            child: Text('Add Task'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFF99a9dd), // Button color
+                              onPrimary: Colors.white, // Text color
+                              minimumSize: const Size(20, 50),
+                              maximumSize: const Size(20, 50),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0.0), // Make borders square
+                              ),
+                            ),
+                          ),
+                        ]),
                   ),
-                ]))));
+                ),
+              ),
+            ])));
   }
 }

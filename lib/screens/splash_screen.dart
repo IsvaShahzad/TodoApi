@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff201b39), // Set background color
+      backgroundColor: Color(0xffFFFFFF), // Set background color
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -41,8 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Padding(
               padding: EdgeInsets.all(5.0), // Add padding around the image
               child: Image.asset(
-                'assets/images/splashscreenimage1.jpeg',
-                fit: BoxFit.fitHeight,
+                'assets/images/mainimage.png',
               ),
             ),
           ),
